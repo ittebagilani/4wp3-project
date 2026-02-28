@@ -56,3 +56,13 @@ exports.deleteCompleted = function(callback) {
     db.run("DELETE FROM Projects WHERE status = 'Completed'", [], callback);
 };
 
+// filter by status
+exports.filterByStatus = (status, callback) => {
+    db.all("SELECT * FROM Projects WHERE status = ?", [status], callback);
+};
+
+// sort by deadline
+exports.sortByDeadline = (callback) => {
+    db.all("SELECT * FROM Projects ORDER BY deadline ASC", [], callback);
+};
+
