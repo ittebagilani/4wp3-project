@@ -1,0 +1,24 @@
+<h2>Create Project</h2>
+
+{{#errors}}
+<p class="error">{{.}}</p>
+{{/errors}}
+
+<form method="POST" action="/create">
+    <input name="title" placeholder="Title" required>
+    <textarea name="description"></textarea>
+    <input type="date" name="deadline" required>
+    <input type="number" name="priority" min="1" max="5">
+    <input type="number" name="progress_percent" min="0" max="100">
+
+    <select name="status">
+        <option>Not Started</option>
+        <option>In Progress</option>
+        <option>Completed</option>
+    </select>
+
+    <button type="submit">Create</button>
+</form>
+
+
+    
