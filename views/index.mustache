@@ -1,0 +1,27 @@
+<h1>Project Dashboard</h1>
+
+<a href="/sort/deadline">Sort by Deadline</a>
+
+<table>
+<tr>
+    <th>Title</th>
+    <th>Status</th>
+    <th>Deadline</th>
+    <th>Progress</th>
+    <th>Actions</th>
+</tr>
+
+{{#projects}}
+<tr>
+    <td>{{title}}</td>
+    <td>{{status}}</td>
+    <td>{{deadline}}</td>
+    <td>{{progress_percent}}%</td>
+    <td>
+        <a href="/project/{{id}}">View</a>
+        <a href="/edit/{{id}}">Edit</a>
+        <a href="/delete/{{id}}">Delete</a>
+    </td>
+<tr>
+{{/projects}}
+</table>
