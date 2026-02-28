@@ -1,0 +1,18 @@
+<h2>Edit Project</h2>
+
+<form method="POST" action="/update/{{id}}">
+    <input name="title" value="{{title}}">
+    <textarea name="description">{{description}}</textarea>
+    <input type="date" name="deadline" value="{{deadline}}">
+    <input type="number" name="priority" value="{{priority}}">
+    <input type="number" name="progress_percent" value="{{progress_percent}}">
+    
+    <select name="status">
+        <option>{{status}}</option>
+        <option>Not Started</option>
+        <option>In Progress</option>
+        <option>Completed</option>
+    </select>
+
+    <button type="submit">Update</button>
+</form>
