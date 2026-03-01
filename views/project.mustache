@@ -1,6 +1,60 @@
-<h2>{{title}}</h2>
-<p>{{description}}</p>
-<p>Deadline: {{deadline}}</p>
-<p>Priority: {{priority}}</p>
-<p>Status: {{status}}</p>
-<p>Progress: {{progress_percent}}%</p>
+<div class="page-header">
+    <a href="/" class="btn btn-back">&#8592; Dashboard</a>
+</div>
+
+<div class="detail-card">
+    <div class="detail-hero">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+            <h1>{{title}}</h1>
+            {{#isCompleted}}<span class="badge badge-success">&#10003; Completed</span>{{/isCompleted}}
+            {{#isInProgress}}<span class="badge badge-info">&#8635; In Progress</span>{{/isInProgress}}
+            {{#isNotStarted}}<span class="badge badge-default">&#9711; Not Started</span>{{/isNotStarted}}
+        </div>
+        <p class="description">{{description}}</p>
+    </div>
+
+    <div class="detail-body">
+        <div class="detail-progress">
+            <label>Progress</label>
+            <div class="detail-progress-bar">
+                <div class="detail-progress-fill" style="width: {{progress_percent}}%"></div>
+            </div>
+            <div class="detail-progress-label">{{progress_percent}}%</div>
+        </div>
+
+        <div class="detail-grid">
+            <div class="detail-field">
+                <label>Deadline</label>
+                <div class="field-value">&#128197; {{deadline}}</div>
+            </div>
+            <div class="detail-field">
+                <label>Priority</label>
+                <div class="field-value">
+                    {{#priorityHigh}}<span class="badge badge-danger">High &mdash; {{priority}} / 5</span>{{/priorityHigh}}
+                    {{#priorityMed}}<span class="badge badge-warning">Medium &mdash; {{priority}} / 5</span>{{/priorityMed}}
+                    {{#priorityLow}}<span class="badge badge-default">Low &mdash; {{priority}} / 5</span>{{/priorityLow}}
+                </div>
+            </div>
+            <div class="detail-field">
+                <label>Status</label>
+                <div class="field-value">{{status}}</div>
+            </div>
+            <div class="detail-field">
+                <label>Created</label>
+                <div class="field-value">{{created_at}}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-actions">
+        <a href="/edit/{{id}}" class="btn btn-primary">&#9998; Edit Project</a>
+        {{^isCompleted}}
+        <form method="POST" action="/complete/{{id}}" style="display:inline">
+            <button type="submit" class="btn btn-secondary">&#10003; Mark Complete</button>
+        </form>
+        {{/isCompleted}}
+        <a href="/delete/{{id}}" class="btn btn-danger-outline"
+           onclick="return confirm('Permanently delete this project?')"
+           style="margin-left:auto">Delete</a>
+    </div>
+</div>

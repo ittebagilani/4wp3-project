@@ -1,18 +1,71 @@
-<h2>Edit Project</h2>
+<div class="page-header">
+    <div>
+        <h1>Edit Project</h1>
+        <p class="page-subtitle">Update the details for <strong>{{title}}</strong>.</p>
+    </div>
+    <a href="/project/{{id}}" class="btn btn-back">&#8592; Back</a>
+</div>
 
-<form method="POST" action="/update/{{id}}">
-    <input name="title" value="{{title}}">
-    <textarea name="description">{{description}}</textarea>
-    <input type="date" name="deadline" value="{{deadline}}">
-    <input type="number" name="priority" value="{{priority}}">
-    <input type="number" name="progress_percent" value="{{progress_percent}}">
-    
-    <select name="status">
-        <option>{{status}}</option>
-        <option>Not Started</option>
-        <option>In Progress</option>
-        <option>Completed</option>
-    </select>
+<div class="form-card">
+    {{#errors}}
+    <div class="error-box">
+        <h4>&#9888; Please fix the following errors:</h4>
+        <ul>
+            {{#errors}}
+            <li>{{.}}</li>
+            {{/errors}}
+        </ul>
+    </div>
+    {{/errors}}
 
-    <button type="submit">Update</button>
-</form>
+    <form method="POST" action="/update/{{id}}">
+        <div class="form-group">
+            <label for="title">Project Title *</label>
+            <input type="text" id="title" name="title" value="{{title}}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description">{{description}}</textarea>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="deadline">Deadline *</label>
+                <input type="date" id="deadline" name="deadline" value="{{deadline}}" required>
+                <p class="form-hint">Must be a future date.</p>
+            </div>
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" name="status">
+                    <option value="Not Started" {{#isNotStarted}}selected{{/isNotStarted}}>Not Started</option>
+                    <option value="In Progress" {{#isInProgress}}selected{{/isInProgress}}>In Progress</option>
+                    <option value="Completed"   {{#isCompleted}}selected{{/isCompleted}}>Completed</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="priority">Priority *</label>
+                <input type="number" id="priority" name="priority"
+                       value="{{priority}}" min="1" max="5">
+                <p class="form-hint">Whole number between 1 (low) and 5 (high).</p>
+            </div>
+            <div class="form-group">
+                <label for="progress_percent">Progress (%)</label>
+                <input type="number" id="progress_percent" name="progress_percent"
+                       value="{{progress_percent}}" min="0" max="100">
+                <p class="form-hint">Number between 0 and 100.</p>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="/project/{{id}}" class="btn btn-secondary">Cancel</a>
+            <a href="/delete/{{id}}" class="btn btn-danger-outline"
+               onclick="return confirm('Permanently delete this project?')"
+               style="margin-left:auto">Delete Project</a>
+        </div>
+    </form>
+</div>

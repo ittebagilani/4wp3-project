@@ -8,6 +8,7 @@ const projectController = require("./controllers/projectController");
 app.engine("mustache", mustacheExpress());
 app.set("view engine", "mustache");
 app.set("views", __dirname + "/views");
+app.set("layout", "layout");
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: false }));

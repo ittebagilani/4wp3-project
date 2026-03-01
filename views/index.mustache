@@ -1,27 +1,139 @@
-<h1>Project Dashboard</h1>
+<div class="page-header">
+    <div>
+        <h1>Project Dashboard</h1>
+        <p class="page-subtitle">Track and manage all your projects in one place.</p>
+    </div>
+    <a href="/create" class="btn btn-primary">+ New Project</a>
+</div>
 
-<a href="/sort/deadline">Sort by Deadline</a>
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-number">{{stats.total}}</div>
+        <div class="stat-label">Total</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{stats.inProgress}}</div>
+        <div class="stat-label">In Progress</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{stats.completed}}</div>
+        <div class="stat-label">Completed</div>
+    </div>
+</div>
 
-<table>
-<tr>
-    <th>Title</th>
-    <th>Status</th>
-    <th>Deadline</th>
-    <th>Progress</th>
-    <th>Actions</th>
-</tr>
+<div class="toolbar">
+    <div class="filter-bar">
+        <span class="filter-label">Filter:</span>
+        <a href="/" class="filter-btn {{#filterAll}}active{{/filterAll}}">All</a>
+        <a href="/?status=In Progress" class="filter-btn {{#filterInProgress}}active{{/filterInProgress}}">In Progress</a>
+        <a href="/?status=Completed" class="filter-btn {{#filterCompleted}}active{{/filterCompleted}}">Completed</a>
+        <a href="/?status=Not Started" class="filter-btn {{#filterNotStarted}}active{{/filterNotStarted}}">Not Started</a>
+    </div>
+    <div class="sort-actions">
+        <a href="/?sort=deadline" class="btn btn-secondary">Sort by Deadline</a>
+        <a href="/delete-completed" class="btn btn-danger-outline"
+           onclick="return confirm('Delete all completed projects? This cannot be undone.')">
+            Clear Completed
+        </a>
+    </div>
+</div>
 
-{{#projects}}
-<tr>
-    <td>{{title}}</td>
-    <td>{{status}}</td>
-    <td>{{deadline}}</td>
-    <td>{{progress_percent}}%</td>
-    <td>
-        <a href="/project/{{id}}">View</a>
-        <a href="/edit/{{id}}">Edit</a>
-        <a href="/delete/{{id}}">Delete</a>
-    </td>
-<tr>
-{{/projects}}
-</table>
+<div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>Project</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Deadline</th>
+                <th>Progress</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#projects}}
+            <tr>
+                <td class="td-title">
+                    <a href="/project/{{id}}" class="project-link">{{title}}</a>
+                    <div class="project-desc">{{description}}</div>
+                </td>
+                <td>
+                    {{#isCompleted}}<span class="badge badge-success">&#10003; Completed</span>{{/isCompleted}}
+                    {{#isInProgress}}<span class="badge badge-info">&#8635; In Progress</span>{{/isInProgress}}
+                    {{#isNotStarted}}<span class="badge badge-default">&#9711; Not Started</span>{{/isNotStarted}}
+                </td>
+                <td>
+                    {{#priorityHigh}}<span class="badge badge-danger">High ({{priority}})</span>{{/priorityHigh}}
+                    {{#priorityMed}}<span class="badge badge-warning">Med ({{priority}})</span>{{/priorityMed}}
+                    {{#priorityLow}}<span class="badge badge-default">Low ({{priority}})</span>{{/priorityLow}}
+                </td>
+                <td>{{deadline}}</td>
+                <td class="td-progress">
+                    <div class="progress-bar-wrap">
+                        <div class="progress-bar-fill" style="width: {{progress_percent}}%"></div>
+                    </div>
+                    <span class="progress-pct">{{progress_percent}}%</span>
+                </td>
+                <td class="td-actions">
+                    <a href="/project/{{id}}" class="btn-sm btn-view">View</a>
+                    <a href="/edit/{{id}}" class="btn-sm btn-edit">Edit</a>
+                    {{^isCompleted}}
+                    <form method="POST" action="/complete/{{id}}" style="display:inline">
+                        <button type="submit" class="btn-sm btn-complete" title="Mark as Complete">&#10003;</button>
+                    </form>
+                    {{/isCompleted}}
+                    <a href="/delete/{{id}}" class="btn-sm btn-delete"
+                       onclick="return confirm('Delete {{title}}?')">Delete</a>
+                </td>
+            </tr>
+            {{/projects}}
+            {{^projects}}
+            <tr class="empty-row">
+                <td colspan="6">
+                    <div class="empty-icon">&#128203;</div>
+                    <p>No projects here. <a href="/create">Create your first project &rarr;</a></p>
+                </td>
+            </tr>
+            {{/projects}}
+        </tbody>
+    </table>
+</div>
+
+<div class="mobile-cards">
+    {{#projects}}
+    <div class="project-card">
+        <div class="card-header">
+            <a href="/project/{{id}}" class="project-link">{{title}}</a>
+            {{#isCompleted}}<span class="badge badge-success">Completed</span>{{/isCompleted}}
+            {{#isInProgress}}<span class="badge badge-info">In Progress</span>{{/isInProgress}}
+            {{#isNotStarted}}<span class="badge badge-default">Not Started</span>{{/isNotStarted}}
+        </div>
+        <div class="card-body">
+            <p class="card-desc">{{description}}</p>
+            <div class="card-meta">
+                <span>&#128197; {{deadline}}</span>
+                <span>Priority: {{priority}}/5</span>
+            </div>
+            <div class="progress-bar-wrap" style="width:100%; display:block;">
+                <div class="progress-bar-fill" style="width: {{progress_percent}}%"></div>
+            </div>
+            <div class="progress-pct" style="margin-left:0; margin-top:4px;">{{progress_percent}}%</div>
+        </div>
+        <div class="card-actions">
+            <a href="/edit/{{id}}" class="btn-sm btn-edit">Edit</a>
+            {{^isCompleted}}
+            <form method="POST" action="/complete/{{id}}" style="display:inline">
+                <button type="submit" class="btn-sm btn-complete">&#10003; Complete</button>
+            </form>
+            {{/isCompleted}}
+            <a href="/delete/{{id}}" class="btn-sm btn-delete"
+               onclick="return confirm('Delete?')">Delete</a>
+        </div>
+    </div>
+    {{/projects}}
+    {{^projects}}
+    <div class="empty-state-mobile">
+        <p>No projects yet. <a href="/create">Create one &rarr;</a></p>
+    </div>
+    {{/projects}}
+</div>

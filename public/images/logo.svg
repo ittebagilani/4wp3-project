@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="40" viewBox="0 0 160 40">
+  
+  <rect x="4" y="26" width="7" height="10" rx="1.5" fill="#a09890"/>
+  <rect x="15" y="17" width="7" height="19" rx="1.5" fill="#c8c3bc"/>
+  <rect x="26" y="8"  width="7" height="28" rx="1.5" fill="#f7f5f2"/>
+  
+  <text x="42" y="27" font-family="Georgia, serif" font-size="17" font-weight="400" font-style="italic" fill="#f7f5f2" letter-spacing="-0.2">Build</text>
+  <text x="93" y="27" font-family="system-ui, sans-serif" font-size="14" font-weight="300" fill="#a09890" letter-spacing="0.5">Track</text>
+</svg>

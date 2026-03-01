@@ -1,24 +1,70 @@
-<h2>Create Project</h2>
+<div class="create-header">
+    <a href="/" class="btn btn-back">&#8592; Back</a>
+    <div>
+        <h1>New Project</h1>
+        <p class="page-subtitle">Fill in the details to create a new project.</p>
+    </div>
+</div>
 
-{{#errors}}
-<p class="error">{{.}}</p>
-{{/errors}}
+<div class="form-card form-card-centered">
+    {{#errors}}
+    <div class="error-box">
+        <h4>&#9888; Please fix the following errors:</h4>
+        <ul>
+            {{#errors}}
+            <li>{{.}}</li>
+            {{/errors}}
+        </ul>
+    </div>
+    {{/errors}}
 
-<form method="POST" action="/create">
-    <input name="title" placeholder="Title" required>
-    <textarea name="description"></textarea>
-    <input type="date" name="deadline" required>
-    <input type="number" name="priority" min="1" max="5">
-    <input type="number" name="progress_percent" min="0" max="100">
+    <form method="POST" action="/create">
+        <div class="form-group">
+            <label for="title">Project Title *</label>
+            <input type="text" id="title" name="title"
+                   value="{{form.title}}" placeholder="e.g. Website Redesign" required>
+        </div>
 
-    <select name="status">
-        <option>Not Started</option>
-        <option>In Progress</option>
-        <option>Completed</option>
-    </select>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description"
+                      placeholder="Brief overview of what this project involves...">{{form.description}}</textarea>
+        </div>
 
-    <button type="submit">Create</button>
-</form>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="deadline">Deadline *</label>
+                <input type="date" id="deadline" name="deadline" value="{{form.deadline}}" required>
+                <p class="form-hint">Must be a future date.</p>
+            </div>
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" name="status">
+                    <option value="Not Started">Not Started</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </div>
+        </div>
 
+        <div class="form-row">
+            <div class="form-group">
+                <label for="priority">Priority *</label>
+                <input type="number" id="priority" name="priority"
+                       value="{{form.priority}}" min="1" max="5" placeholder="1–5">
+                <p class="form-hint">Whole number between 1 (low) and 5 (high).</p>
+            </div>
+            <div class="form-group">
+                <label for="progress_percent">Progress (%)</label>
+                <input type="number" id="progress_percent" name="progress_percent"
+                       value="{{form.progress_percent}}" min="0" max="100" placeholder="0–100">
+                <p class="form-hint">Number between 0 and 100.</p>
+            </div>
+        </div>
 
-    
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create Project</button>
+            <a href="/" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

@@ -1,16 +1,13 @@
 const db = require("./db");
 
-// get all projects
 exports.getAll = function(callback) {
     db.all("SELECT * FROM Projects", [], callback);
 };
 
-//get project by ID
 exports.getById = function(id, callback) {
     db.get("SELECT * FROM Projects WHERE id = ?", [id], callback);
 };
 
-// create project
 exports.create = function(project, callback) {
     db.run(`
         INSERT INTO Projects
@@ -28,7 +25,6 @@ exports.create = function(project, callback) {
         callback);
 };
 
-// update project
 exports.update = function(id, project, callback) {
     db.run(`
             UPDATE Projects
@@ -46,23 +42,26 @@ exports.update = function(id, project, callback) {
     ], callback);
 };
 
-// delete project
 exports.delete = function(id, callback) {
     db.run("DELETE FROM Projects WHERE id = ?", [id], callback);
 };
 
-// delete completed projects
 exports.deleteCompleted = function(callback) {
     db.run("DELETE FROM Projects WHERE status = 'Completed'", [], callback);
 };
 
-// filter by status
 exports.filterByStatus = (status, callback) => {
     db.all("SELECT * FROM Projects WHERE status = ?", [status], callback);
 };
 
-// sort by deadline
 exports.sortByDeadline = (callback) => {
     db.all("SELECT * FROM Projects ORDER BY deadline ASC", [], callback);
 };
 
+exports.markComplete = function(id, callback) {
+    db.run(
+        "UPDATE Projects SET status = 'Completed', progress_percent = 100 WHERE id = ?",
+        [id],
+        callback
+    );
+};
